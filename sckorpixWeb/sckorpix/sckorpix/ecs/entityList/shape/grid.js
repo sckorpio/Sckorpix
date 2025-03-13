@@ -1,0 +1,75 @@
+import { Shape } from "./shape.js";
+import { MeshComponent } from "../../componentList/meshComponent.js";
+
+class Grid extends Shape{
+    constructor(gridCount = 10.0, gridGap = 1.0){
+        //constructor of Mesh Component
+        super();
+
+        //grid data
+        this.gridCount = gridCount;
+        this.gridGap = gridGap;
+        this.addMeshComponent();
+    }
+
+    addMeshComponent(){
+        this.meshComponent = new MeshComponent();
+
+        //layout
+        const layout = [{type:"float",count:3}];
+
+        //fill Vertex data
+        this.fillGridLinesVertices();
+
+        //set data to renderComponent
+        this.meshComponent.renderComponent.setData(
+            layout,
+            this.meshComponent.verticesData
+        );
+
+        //set data to renderComponent
+        this.meshComponent.renderComponent.setData(
+            layout,
+            this.meshComponent.verticesData
+        );
+        this.meshComponent.renderComponent.setTopology("lines");
+    }
+
+    fillGridLinesVertices(){
+        //Addling line parallel to Y axis
+        for(let i = -this.gridCount; i <= this.gridCount; i++){
+            let x1 = i * this.gridGap;
+            let y1 = 0.0;
+            let z1 = this.gridCount * this.gridGap;
+            
+            let x2 = i * this.gridGap;
+            let y2 = 0.0;
+            let z2 = -(this.gridCount * this.gridGap);
+            
+            this.meshComponent.verticesData = this.meshComponent.verticesData.concat([
+                x1,y1,z1,
+                x2,y2,z2
+            ]);
+        }
+
+        //Addling line parallel to X axis
+        for(let i = -this.gridCount; i <= this.gridCount; i++){
+            let x1 = this.gridCount * this.gridGap;
+            let y1 = 0.0;
+            let z1 = i * this.gridGap;
+            
+            let x2 = -(this.gridCount * this.gridGap);
+            let y2 = 0.0;
+            let z2 = i * this.gridGap;
+            
+            this.meshComponent.verticesData = this.meshComponent.verticesData.concat([
+                x1,y1,z1,
+                x2,y2,z2
+            ]);
+        }
+    }
+}
+
+export{
+    Grid
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sckorpix Web</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.4.0/gl-matrix.js"></script>
+
+    <style>
+        /* Ensure the body takes full height */
+        body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Make sure both canvases are stacked on top of each other */
+        #sckorpix-webgl-surface {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* 2D Canvas Styling with neon green background and red border */
+        #sckorpix-2d-title-surface {
+            position: absolute;
+            top: 10px; 
+            left: 10px; 
+            width: 180px;
+            height: 70px;
+            background-color: rgba(0, 0, 0, 0); 
+            z-index: 10;
+            display: block; /* Always Visible */ 
+        }
+
+        /* 2D Canvas Styling with neon green background and red border */
+        #sckorpix-2d-logger-surface {
+            position: absolute;
+            right: 10px; 
+            top: 10px; 
+            width: 180px;
+            height: 80px;
+            background-color: rgba(0, 0, 0, 0); 
+            z-index: 10;
+            display: none; /* Initially hidden */ 
+        }
+</style>
+</head>
+
+<body>
+    <h1>SckorPix</h1>
+    <!-- Canvas element for WebGL rendering -->
+    <canvas id="sckorpix-webgl-surface">
+        Your browser does not support HTML5
+    </canvas>
+
+    <!-- Canvas element for 2D text rendering -->
+    <canvas id="sckorpix-2d-title-surface">
+        Your browser does not support the HTML5 canvas element.
+    </canvas>
+
+    <!-- Canvas element for 2D text rendering -->
+    <canvas id="sckorpix-2d-logger-surface">
+        Your browser does not support the HTML5 canvas element.
+    </canvas>
+    
+    <br/>
+    <i>WebGL Render Scene</i>
+    <script type="module" src="main.js"></script>
+    
+</body>
+</html>
