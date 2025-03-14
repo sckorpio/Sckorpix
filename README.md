@@ -1,3 +1,4 @@
 # Sckorpix
 Graphics Engine with Opengl/WebGL
-<img width="1509" alt="Screenshot 2025-03-13 at 2 01 37 PM" src="https://github.com/user-attachments/assets/ac3334eb-ec9c-4fb1-9a99-5a20965c43cc" />
+
+<img width="1470" alt="Screenshot 2025-03-14 at 10 40 04 AM" src="https://github.com/user-attachments/assets/88b4ed6d-532d-4bf4-be80-e59b167af800" />
