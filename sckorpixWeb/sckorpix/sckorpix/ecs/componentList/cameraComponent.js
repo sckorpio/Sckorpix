@@ -35,7 +35,7 @@ class CameraComponent extends Component{
 
   initCamera(){
     //camera vectors
-    this.cameraPos = vec3.fromValues(0.0, 2.0, 6.0);
+    this.cameraPos = vec3.fromValues(4.0, 3.0, 12.0);
     this.cameraFront = vec3.fromValues(0.0, 0.0, -1.0);
     this.cameraUp = vec3.fromValues(0.0, 1.0, 0.0);
 

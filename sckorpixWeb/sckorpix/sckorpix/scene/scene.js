@@ -120,7 +120,8 @@ class Scene {
         this.zAxis.setVisible(isVisible);
     }
 
-    finish(){
+    load(){
+        // load systems with entities according to components
         this.addEntitiesToRenderer();
     }
 
@@ -128,16 +129,16 @@ class Scene {
         //Add Meshes to list'
         this.renderer.addEntityList(this.defaultEntitiesList);
         this.renderer.addEntityList(this.entitiesList);
+        // load Data of entities from CPU to GPU
+        this.renderer.loadEntityDataToGPU();
     }
 
-    async play(){
+    play(){
         /*
         RENDERER render()
         */
         this.renderer.render();
 
-        // Add delay for 2 seconds
-        await new Promise(resolve => setTimeout(resolve, 0));
 
         //loop
         requestAnimationFrame(this.play.bind(this));

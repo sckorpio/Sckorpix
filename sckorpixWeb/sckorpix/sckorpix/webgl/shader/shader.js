@@ -2,34 +2,34 @@ import { getWebGLContext, getWebGLResourceID } from "../../canvas/utils.js";
 
 class Shader {
   constructor() {
-    this.m_UniqueID = getWebGLResourceID();
-    this.m_ShaderName = '';
-    this.m_FilePath = '';
-    this.m_VertexShaderSource = '';
-    this.m_FragmentShaderSource = '';
-    this.m_ShaderProgram = null;
+    this.uniqueID = getWebGLResourceID();
+    this.shaderName = '';
+    this.filePath = '';
+    this.vertexShaderSource = '';
+    this.fragmentShaderSource = '';
+    this.shaderProgram = null;
   }
 
   // Destructor for cleanup
   dispose() {
-    if (this.m_ShaderProgram) {
+    if (this.shaderProgram) {
       const gl = getWebGLContext();
-      gl.deleteProgram(this.m_ShaderProgram);
+      gl.deleteProgram(this.shaderProgram);
     }
   }
 
   // Generate Shader Program
   async generate(shaderName) {
-    this.m_ShaderProgram = null;
-    this.m_ShaderName = shaderName;
-    this.m_FilePath = "sckorpix/resources/shaders/" + shaderName + ".txt";
+    this.shaderProgram = null;
+    this.shaderName = shaderName;
+    this.filePath = "sckorpix/resources/shaders/" + shaderName + ".txt";
 
-    const source = await this.parseShader(this.m_FilePath);
+    const source = await this.parseShader(this.filePath);
 
     const vertexShaderID = this.compileShader(source.vertexSource, 'vertex');
     const fragmentShaderID = this.compileShader(source.fragmentSource, 'fragment');
 
-    this.m_ShaderProgram = this.linkProgram(vertexShaderID, fragmentShaderID);
+    this.shaderProgram = this.linkProgram(vertexShaderID, fragmentShaderID);
     this.bind();
   }
 
@@ -124,16 +124,16 @@ class Shader {
 
   // Bind
   bind() {
-    //console.log("Bind() Shader =",this.m_UniqueID);
+    //console.log("Bind() Shader =",this.uniqueID);
     const gl = getWebGLContext();
-    if (this.m_ShaderProgram) {
-      gl.useProgram(this.m_ShaderProgram);
+    if (this.shaderProgram) {
+      gl.useProgram(this.shaderProgram);
     }
   }
 
   // unbind
   unbind() {
-    //console.log("UnBind() Shader =",this.m_UniqueID);
+    //console.log("UnBind() Shader =",this.uniqueID);
     const gl = getWebGLContext();
     gl.useProgram(null);
   }
@@ -141,7 +141,7 @@ class Shader {
   //get AttribLocation from shader
   getAttribLocation(name) {
     const gl = getWebGLContext();
-    return gl.getAttribLocation(this.m_ShaderProgram, name);
+    return gl.getAttribLocation(this.shaderProgram, name);
   }
 
   // Setters for uniform variables
@@ -189,7 +189,7 @@ class Shader {
 
   getUniformLocation(name) {
     const gl = getWebGLContext();
-    const location = gl.getUniformLocation(this.m_ShaderProgram, name);
+    const location = gl.getUniformLocation(this.shaderProgram, name);
     if (location === null) {
       console.error(`${name} - not exist`);
     }

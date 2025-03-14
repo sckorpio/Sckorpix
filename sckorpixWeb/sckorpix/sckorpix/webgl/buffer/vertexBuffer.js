@@ -2,31 +2,31 @@ import { getWebGLContext, getWebGLResourceID } from "../../canvas/utils.js";
 
 class VertexBuffer {
     constructor() {
-        this.m_UniqueID = getWebGLResourceID();
-        this.m_VertexBuffer;
+        this.uniqueID = getWebGLResourceID();
+        this.vertexBuffer;
     }
 
     // Generates vertex buffer
     generate(data) {
         const gl = getWebGLContext();
         // Create a new buffer
-        this.m_VertexBuffer = gl.createBuffer();
+        this.vertexBuffer = gl.createBuffer();
         // Bind the buffer
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.m_VertexBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
         // Provide the data to the buffer
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
     }
 
     // Binds 
     bind() {
-        //console.log("Bind() VB =",this.m_UniqueID);
+        //console.log("Bind() VB =",this.uniqueID);
         const gl = getWebGLContext();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.m_VertexBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
     }
 
     // unbinds
     unbind() {
-        //console.log("Bind() VB =",this.m_UniqueID);
+        //console.log("Bind() VB =",this.uniqueID);
         const gl = getWebGLContext();
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
     }

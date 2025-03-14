@@ -12,7 +12,7 @@ var initSckorpix = async function () {
     var scene = new Project1(); 
     await scene.init(); 
     await scene.createScene();
-    scene.finish();
+    scene.load();
     scene.play();
 }
 

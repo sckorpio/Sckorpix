@@ -1,8 +1,9 @@
 class VertexBufferElement {
-    constructor(type, count, normalized) {  
-      this.m_Type = type;
-      this.m_Count = count;
-      this.m_Normalized = normalized;
+    constructor(type, count, normalized, attribLocation) {  
+      this.type = type;
+      this.count = count;
+      this.normalized = normalized;
+      this.attribLocation = attribLocation;
     }
   
     static getSizeOfType(type) {
@@ -37,20 +38,20 @@ class VertexBufferElement {
     }
   
     // push elements(float) in layout
-    pushFloat(count) {
-        this.m_Elements.push(new VertexBufferElement(WebGLRenderingContext.FLOAT, count, WebGLRenderingContext.FALSE));
+    pushFloat(count,attribLocation) {
+        this.m_Elements.push(new VertexBufferElement(WebGLRenderingContext.FLOAT, count, WebGLRenderingContext.FALSE, attribLocation));
         this.m_Stride += VertexBufferElement.getSizeOfType(WebGLRenderingContext.FLOAT) * count;
     }
 
     // push elements(int) in layout
-    pushUnsignedInt(count) {
-        this.m_Elements.push(new VertexBufferElement(WebGLRenderingContext.UNSIGNED_INT, count, WebGLRenderingContext.FALSE));
+    pushUnsignedInt(count,attribLocation) {
+        this.m_Elements.push(new VertexBufferElement(WebGLRenderingContext.UNSIGNED_INT, count, WebGLRenderingContext.FALSE, attribLocation));
         this.m_Stride += VertexBufferElement.getSizeOfType(WebGLRenderingContext.UNSIGNED_INT) * count;
     }
 
     // push elements(byte) in layout
-    pushUnsignedByte(count) {
-        this.m_Elements.push(new VertexBufferElement(WebGLRenderingContext.UNSIGNED_BYTE, count, WebGLRenderingContext.TRUE));
+    pushUnsignedByte(count,attribLocation) {
+        this.m_Elements.push(new VertexBufferElement(WebGLRenderingContext.UNSIGNED_BYTE, count, WebGLRenderingContext.TRUE, attribLocation));
         this.m_Stride += VertexBufferElement.getSizeOfType(WebGLRenderingContext.UNSIGNED_BYTE) * count;
     }
   }

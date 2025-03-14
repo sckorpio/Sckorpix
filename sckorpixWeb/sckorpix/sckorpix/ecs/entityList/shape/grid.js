@@ -16,22 +16,14 @@ class Grid extends Shape{
         this.meshComponent = new MeshComponent();
 
         //layout
-        const layout = [{type:"float",count:3}];
+        this.meshComponent.layout = [
+            {type:"float",count:3,name:"vertPosition"}
+        ];
 
         //fill Vertex data
         this.fillGridLinesVertices();
 
-        //set data to renderComponent
-        this.meshComponent.renderComponent.setData(
-            layout,
-            this.meshComponent.verticesData
-        );
-
-        //set data to renderComponent
-        this.meshComponent.renderComponent.setData(
-            layout,
-            this.meshComponent.verticesData
-        );
+        //set topology
         this.meshComponent.renderComponent.setTopology("lines");
     }
 

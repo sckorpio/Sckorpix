@@ -1,8 +1,9 @@
+import { getWebGLResourceID } from "../../canvas/utils.js";
 import { Shader } from "../shader/shader.js";
 
 class Material{
     constructor(name = "basic3D") {
-        this.m_RendererID = null;
+        this.uniqueID = getWebGLResourceID();
         this.name = name;
         this.shader;
         this.texture;

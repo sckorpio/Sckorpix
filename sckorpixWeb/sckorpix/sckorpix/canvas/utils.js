@@ -22,8 +22,6 @@ export function getWebGLResourceID() {
   return resourceID++;
 }
 
-export const gl = getWebGLContext();
-
 export function getWebGLContext() {
   var canvas = document.getElementById("sckorpix-webgl-surface");
   var gl = canvas.getContext("webgl2");

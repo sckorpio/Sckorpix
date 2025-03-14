@@ -2,17 +2,17 @@ import { getWebGLContext, getWebGLResourceID } from "../../canvas/utils.js";
 import { VertexBufferElement } from "./vertexBufferLayout.js";
 class VertexArray {
     constructor() {
-        this.m_UniqueID = getWebGLResourceID();
-        this.m_VertexBuffer;
+        this.uniqueID = getWebGLResourceID();
+        this.vertexArray;
     }
 
     // Generates vertex array 
     generate() {
         const gl = getWebGLContext();
         // Create a new vertex array object
-        this.m_VertexBuffer = gl.createVertexArray();
+        this.vertexArray = gl.createVertexArray();
         // Bind the vertex array 
-        gl.bindVertexArray(this.m_VertexBuffer);
+        gl.bindVertexArray(this.vertexArray);
     }
 
     // Adds a vertex buffer and its layout to the vertex array
@@ -23,36 +23,36 @@ class VertexArray {
 
         // Get the layout elements
         const elements = layout.getElements();
+
+        // offset
         let offset = 0;
 
-        elements.forEach((element, i) => {
+        elements.forEach((element) => {
             gl.vertexAttribPointer(
-                i,                      // attrib location
-                element.m_Count,          // count of elements
-                element.m_Type,           // type of element
-                element.m_Normalized,     // normalise?
+                element.attribLocation,  // attrib location
+                element.count,          // count of elements
+                element.type,           // type of element
+                element.normalized,     // normalise?
                 layout.getStride(),     // stride
                 offset                  // offset
             );
 
             //enable
-            gl.enableVertexAttribArray(i);
+            gl.enableVertexAttribArray(element.attribLocation);
 
             // Update the offset for the next attribute
-            offset += element.count * VertexBufferElement.getSizeOfType(element.m_Type);
+            offset += element.count * VertexBufferElement.getSizeOfType(element.type);
         });
     }
 
     // Binds
     bind() {
-        //console.log("Bind() VA =",this.m_UniqueID);
         const gl = getWebGLContext();
-        gl.bindVertexArray(this.m_VertexBuffer);
+        gl.bindVertexArray(this.vertexArray);
     }
 
     // unbinds
     unbind() {
-        //console.log("Bind() VA =",this.m_UniqueID);
         const gl = getWebGLContext();
         gl.bindVertexArray(null);
     }
