@@ -8,6 +8,7 @@ class MeshComponent extends Component{
         this.layout;
         this.verticesData = [];
         this.indexData = [];
+        this.textureUV = [0.0, 0.0, 1.0, 1.0];
         this.material;
         this.renderComponent = new RenderComponent();
     }
@@ -32,6 +33,10 @@ class MeshComponent extends Component{
         this.layout = layout;
     }
 
+    setTextureRepeat(repeatX,repeatY){
+        this.textureUV = [0.0,0.0,repeatX,repeatY];
+    }
+
     setMaterial(material){
         this.material = material;
         this.renderComponent.setMaterial(this.material);
@@ -39,6 +44,10 @@ class MeshComponent extends Component{
 
     getMaterial(material){
         this.material = material;
+    }
+
+    getTextureUV(){
+        return this.textureUV;
     }
 
     loadGPUData(){

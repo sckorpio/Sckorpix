@@ -1,4 +1,4 @@
-import { getWebGLContext, getWebGLResourceID } from "../../canvas/utils.js";
+import { gl, getWebGLResourceID } from "../../canvas/utils.js";
 
 class IndexBuffer {
     constructor() {
@@ -9,7 +9,6 @@ class IndexBuffer {
 
     // Generates index buffer
     generate(data) {
-        const gl = getWebGLContext();
         // index count
         this.count = data.length;
         // Create a new buffer
@@ -23,14 +22,12 @@ class IndexBuffer {
     // Binds
     bind() {
         //console.log("Bind() IB =",this.uniqueID);
-        const gl = getWebGLContext();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
     }
 
     // unbinds
     unbind() {
         //console.log("UnBind() IB =",this.uniqueID);
-        const gl = getWebGLContext();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
     }
 }

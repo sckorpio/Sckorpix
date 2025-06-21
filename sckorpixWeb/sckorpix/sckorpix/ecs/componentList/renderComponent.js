@@ -2,11 +2,10 @@ import { VertexArray } from "../../webgl/buffer/vertexArray.js";
 import { VertexBuffer } from "../../webgl/buffer/vertexBuffer.js";
 import { IndexBuffer } from "../../webgl/buffer/indexBuffer.js";
 import { VertexBufferLayout } from "../../webgl/buffer/vertexBufferLayout.js";
-import { getWebGLContext } from "../../canvas/utils.js";
+import { gl } from "../../canvas/utils.js";
 
 class RenderComponent{
     constructor() {
-        const gl = getWebGLContext();
         this.uid = 0;
         this.vertexArray;
         this.vertexBuffer;
@@ -73,7 +72,6 @@ class RenderComponent{
     }
 
     setTopology(topology){
-        const gl = getWebGLContext();
         //set topology
         if(topology == "triangles"){
             this.topology = gl.TRIANGLES;
@@ -106,6 +104,11 @@ class RenderComponent{
         
         //bind shader
         this.shader.bind();
+
+        //bind texture
+        if(this.texture){
+            this.texture.bind();
+        }
     }
 
     unbind(){
@@ -118,6 +121,11 @@ class RenderComponent{
 
         //Unbind shader
         this.shader.unbind();
+
+        //Unbind texture
+        if(this.texture){
+            this.texture.unbind();
+        }
     }
 }
 

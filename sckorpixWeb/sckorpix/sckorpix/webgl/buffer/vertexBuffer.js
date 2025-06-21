@@ -1,4 +1,4 @@
-import { getWebGLContext, getWebGLResourceID } from "../../canvas/utils.js";
+import { gl, getWebGLResourceID } from "../../canvas/utils.js";
 
 class VertexBuffer {
     constructor() {
@@ -8,7 +8,6 @@ class VertexBuffer {
 
     // Generates vertex buffer
     generate(data) {
-        const gl = getWebGLContext();
         // Create a new buffer
         this.vertexBuffer = gl.createBuffer();
         // Bind the buffer
@@ -20,14 +19,12 @@ class VertexBuffer {
     // Binds 
     bind() {
         //console.log("Bind() VB =",this.uniqueID);
-        const gl = getWebGLContext();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
     }
 
     // unbinds
     unbind() {
         //console.log("Bind() VB =",this.uniqueID);
-        const gl = getWebGLContext();
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
     }
 }

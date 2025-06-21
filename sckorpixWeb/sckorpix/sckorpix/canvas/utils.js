@@ -28,6 +28,8 @@ export function getWebGLContext() {
   return gl;
 }
 
+export let gl = getWebGLContext();
+
 export function getWebGLCanvas() {
   var canvas = document.getElementById("sckorpix-webgl-surface");
   return canvas;

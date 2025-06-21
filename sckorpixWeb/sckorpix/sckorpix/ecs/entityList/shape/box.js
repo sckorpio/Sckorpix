@@ -1,153 +1,60 @@
 import { Shape } from "./shape.js";
-import { MeshComponent } from "../../componentList/meshComponent.js";
 
-class Box extends Shape{
-    constructor(){
-        //constructor of Mesh Component
+class Box extends Shape {
+    /**
+     * @param {Object} options - options for the box
+     * @param {string} options.mode - Type of box ('basic' | 'colorFace' | 'colorVertex' | 'textureFace')
+     * @param {Array<number>} [options.uvRange] - UV range [uMin, vMin, uMax, vMax] (required for 'textureFace' type)
+     */
+    constructor(options = { mode: 'basic' }) {
         super();
-
-        //add Mesh Component
+        this.mode = options.mode;
+        this.uvRange = options.uvRange;
         this.addMeshComponent();
+        this.setMeshComponentData();
     }
 
-    addMeshComponent(){
-        this.meshComponent = new MeshComponent();
+    setMeshComponentData(){
+        switch (this.mode) {
+            case 'basic': this.setBasicBoxMeshComponentData(); break;
+            case 'colorFace': this.setColorFaceMeshComponentData(); break;
+            case 'colorVertex': this.setColorVertexMeshComponentData(); break;
+            case 'textureFace': this.setTextureFaceMeshComponentData(this.uvRange); break;
+        }
+    }
 
-        //layout
+    setMode(mode){
+        this.mode = mode;
+        this.setMeshComponentData();
+        this.meshComponent.loadGPUData();
+    }
+
+    setBasicBoxMeshComponentData(){
         this.meshComponent.layout = [
-            {type:"float",count:3,name:"vertPosition"}
+            { type: "float", count: 3, name: "vertPosition" }
         ];
 
-        //vertices data
-        this.meshComponent.verticesData = 
-        [
-            // Front face
-            -0.5, -0.5, 0.5,    // Bottom-left
-            0.5, -0.5, 0.5,     // Bottom-right
-            0.5, 0.5, 0.5,      // Top-right
-            -0.5, 0.5, 0.5,     // Top-left
-    
-            // Back face
-            -0.5, -0.5, -0.5,   // Bottom-left
-            0.5, -0.5, -0.5,    // Bottom-right
-            0.5, 0.5, -0.5,     // Top-right
-            -0.5, 0.5, -0.5,    // Top-left
+        this.meshComponent.verticesData = [
+            -0.5, -0.5, 0.5,
+            0.5, -0.5, 0.5,
+            0.5, 0.5, 0.5,
+            -0.5, 0.5, 0.5,
+
+            -0.5, -0.5, -0.5,
+            0.5, -0.5, -0.5,
+            0.5, 0.5, -0.5,
+            -0.5, 0.5, -0.5
         ];
 
-        //indices data
-        this.meshComponent.indexData = 
-        [
-            // Front face
-            0, 1, 2,
-            0, 2, 3,
-
-            // Back face
-            4, 5, 6,
-            4, 6, 7,
-
-            // Left face
-            4, 0, 3,
-            4, 3, 7,
-
-            // Right face
-            1, 5, 6,
-            1, 6, 2,
-
-            // Top face
-            3, 2, 6,
-            3, 6, 7,
-
-            // Bottom face
-            4, 5, 1,
-            4, 1, 0
-        ];
-    }
-}
-
-
-class BoxUV extends Shape{
-    constructor(){
-        //constructor of Mesh Component
-        super();
-
-        //add Mesh Component
-        this.addMeshComponent();
+        this.meshComponent.indexData = this.getDefaultBoxIndices();
     }
 
-    addMeshComponent(){
-        this.meshComponent = new MeshComponent();
-
-        //layout
+    setColorFaceMeshComponentData(){
         this.meshComponent.layout = [
-            {type:"float",count:3,name:"vertPosition"},
-            {type:"float",count:2,name:"vertUV"}
+            { type: "float", count: 3, name: "vertPosition" },
+            { type: "float", count: 3, name: "vertColor" }
         ];
 
-        //vertices data
-        this.meshComponent.verticesData = 
-        [
-            // Front face
-            -0.5, -0.5, 0.5, 1.0, 0.0,   // Bottom-left
-            0.5, -0.5, 0.5,  1.0, 0.0,   // Bottom-right
-            0.5, 0.5, 0.5,   1.0, 0.0,   // Top-right
-            -0.5, 0.5, 0.5,  1.0, 0.0,  // Top-left
-    
-            // Back face
-            -0.5, -0.5, -0.5,  0.0, 1.0,  // Bottom-left
-            0.5, -0.5, -0.5,   0.0, 1.0, // Bottom-right
-            0.5, 0.5, -0.5,    0.0, 1.0, // Top-right
-            -0.5, 0.5, -0.5,   0.0, 1.0 // Top-left
-        ];
-
-        //indices data
-        this.meshComponent.indexData = 
-        [
-            // Front face
-            0, 1, 2,
-            0, 2, 3,
-
-            // Back face
-            4, 5, 6,
-            4, 6, 7,
-
-            // Left face
-            4, 0, 3,
-            4, 3, 7,
-
-            // Right face
-            1, 5, 6,
-            1, 6, 2,
-
-            // Top face
-            3, 2, 6,
-            3, 6, 7,
-
-            // Bottom face
-            4, 5, 1,
-            4, 1, 0
-        ];
-    }
-}
-
-
-class BoxColorFace extends Shape{
-    constructor(){
-        //constructor of Mesh Component
-        super();
-
-        this.addMeshComponent();
-    }
-
-    addMeshComponent(){
-        this.meshComponent = new MeshComponent();
-
-        //layout
-        this.meshComponent.layout = [
-            {type:"float",count:3,name:"vertPosition"},  //vertexPosition
-            {type:"float",count:3,name:"vertColor"}      //vertexColor
-        ];
-
-        //vertices data
         this.meshComponent.verticesData = 
         [
             -0.5, -0.5, -0.5,   1.0, 0.0, 0.0,
@@ -190,56 +97,92 @@ class BoxColorFace extends Shape{
             0.5,  0.5,  0.5,    0.0, 1.0, 1.0,
             0.5,  0.5,  0.5,    0.0, 1.0, 1.0,
             -0.5,  0.5,  0.5,   0.0, 1.0, 1.0,
-            -0.5,  0.5, -0.5,    0.0, 1.0, 1.0
+            -0.5,  0.5, -0.5,   0.0, 1.0, 1.0
         ];
     }
-}
 
-class BoxColorVertex extends Shape{
-    constructor(){
-        //constructor of Mesh Component
-        super();
-
-        this.addMeshComponent();
-    }
-
-    addMeshComponent(){
-        this.meshComponent = new MeshComponent();
-
-        //layout
+    setColorVertexMeshComponentData(){
         this.meshComponent.layout = [
-            {type:"float",count:3,name:"vertPosition"},  //vertexPosition
-            {type:"float",count:3,name:"vertColor"}      //vertexColor
+            { type: "float", count: 3, name: "vertPosition" },
+            { type: "float", count: 3, name: "vertColor" }
         ];
 
-        //vertices data
-        this.meshComponent.verticesData =
-        [
-            // Front face 
+        this.meshComponent.verticesData = [
+            -0.5, -0.5, 0.5, 1.0, 0.0, 0.0,
+            0.5, -0.5, 0.5, 0.0, 1.0, 0.0,
+            0.5, 0.5, 0.5, 0.0, 0.0, 1.0,
+            -0.5, 0.5, 0.5, 1.0, 1.0, 0.0,
 
-            -0.5, -0.5, 0.5,   1.0, 0.0, 0.0, 
-            // Bottom-left     //Red
-            0.5, -0.5, 0.5,   0.0, 1.0, 0.0, 
-            // Bottom-right     //Green
-            0.5, 0.5, 0.5,   0.0, 0.0, 1.0, 
-            // Top-right        //Blue
-            -0.5, 0.5, 0.5,   1.0, 1.0, 0.0, 
-            // Top-left         //Yellow
-
-            // Back face
-
-            -0.5, -0.5, -0.5,    1.0, 0.0, 1.0, 
-            // Bottom-left      //magenta
-            0.5, -0.5, -0.5,   0.0, 1.0, 1.0, 
-            // Bottom-right     // Cyan
-            0.5, 0.5, -0.5,   1.0, 0.5, 1.0, 
-            // Top-right        //other
-            -0.5, 0.5, -0.5,   1.0, 1.0, 1.0, 
-            // Top-left         //white
+            -0.5, -0.5, -0.5, 1.0, 0.0, 1.0,
+            0.5, -0.5, -0.5, 0.0, 1.0, 1.0,
+            0.5, 0.5, -0.5, 1.0, 0.5, 1.0,
+            -0.5, 0.5, -0.5, 1.0, 1.0, 1.0
         ];
 
-        this.meshComponent.indexData =
-        [
+        this.meshComponent.indexData = this.getDefaultBoxIndices();
+    }
+
+    setTextureFaceMeshComponentData(uvRange){
+        this.meshComponent.layout = [
+            { type: "float", count: 3, name: "vertPosition" },
+            { type: "float", count: 2, name: "vertUV" }
+        ];
+
+        let [uMin, vMin, uMax, vMax] = uvRange;
+
+        this.meshComponent.verticesData = [
+            // back
+            -0.5, -0.5, -0.5, uMin, vMin,
+            0.5, -0.5, -0.5, uMin, vMin,
+            0.5, 0.5, -0.5, uMin, vMax,
+            0.5, 0.5, -0.5, uMin, vMax,
+            -0.5, 0.5, -0.5, uMax, vMax,
+            -0.5, -0.5, -0.5, uMax, vMin,
+
+            // front
+            -0.5, -0.5, 0.5, uMin, vMin,
+            0.5, -0.5, 0.5, uMax, vMin,
+            0.5, 0.5, 0.5, uMax, vMax,
+            0.5, 0.5, 0.5, uMax, vMax,
+            -0.5, 0.5, 0.5, uMin, vMax,
+            -0.5, -0.5, 0.5, uMin, vMin,
+
+            // left
+            -0.5, -0.5, -0.5, uMin, vMin,
+            -0.5, -0.5, 0.5, uMax, vMin,
+            -0.5, 0.5, 0.5, uMax, vMax,
+            -0.5, 0.5, 0.5, uMax, vMax,
+            -0.5, 0.5, -0.5, uMin, vMax,
+            -0.5, -0.5, -0.5, uMin, vMin,
+
+            // right
+            0.5, -0.5, -0.5, uMax, vMin,
+            0.5, -0.5, 0.5, uMin, vMin,
+            0.5, 0.5, 0.5, uMin, vMax,
+            0.5, 0.5, 0.5, uMin, vMax,
+            0.5, 0.5, -0.5, uMax, vMax,
+            0.5, -0.5, -0.5, uMax, vMin,
+
+            // bottom
+            -0.5, -0.5, -0.5, uMin, vMin,
+            0.5, -0.5, -0.5, uMax, vMin,
+            0.5, -0.5, 0.5, uMax, vMax,
+            0.5, -0.5, 0.5, uMax, vMax,
+            -0.5, -0.5, 0.5, uMin, vMax,
+            -0.5, -0.5, -0.5, uMin, vMin,
+
+            // top
+            -0.5, 0.5, -0.5, uMin, vMax,
+            0.5, 0.5, -0.5, uMax, vMax,
+            0.5, 0.5, 0.5, uMax, vMin,
+            0.5, 0.5, 0.5, uMax, vMin,
+            -0.5, 0.5, 0.5, uMin, vMin,
+            -0.5, 0.5, -0.5, uMin, vMax
+        ];
+    }
+
+    getDefaultBoxIndices() {
+        return [
             // Front face
             0, 1, 2,
             0, 2, 3,
@@ -267,9 +210,4 @@ class BoxColorVertex extends Shape{
     }
 }
 
-export{
-    Box,
-    BoxUV,
-    BoxColorFace,
-    BoxColorVertex
-}
+export { Box };

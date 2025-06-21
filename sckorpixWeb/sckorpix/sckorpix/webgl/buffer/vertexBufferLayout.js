@@ -1,3 +1,5 @@
+import { gl } from "../../canvas/utils.js";
+
 class VertexBufferElement {
     constructor(type, count, normalized, attribLocation) {  
       this.type = type;
@@ -8,11 +10,11 @@ class VertexBufferElement {
   
     static getSizeOfType(type) {
       switch (type) {
-        case WebGLRenderingContext.FLOAT:
+        case gl.FLOAT:
           return 4;
-        case WebGLRenderingContext.UNSIGNED_INT:
+        case gl.UNSIGNED_INT:
           return 4;
-        case WebGLRenderingContext.UNSIGNED_BYTE:
+        case gl.UNSIGNED_BYTE:
           return 1;
         default:
           console.error("Unsupported type:", type);
@@ -39,20 +41,20 @@ class VertexBufferElement {
   
     // push elements(float) in layout
     pushFloat(count,attribLocation) {
-        this.m_Elements.push(new VertexBufferElement(WebGLRenderingContext.FLOAT, count, WebGLRenderingContext.FALSE, attribLocation));
-        this.m_Stride += VertexBufferElement.getSizeOfType(WebGLRenderingContext.FLOAT) * count;
+        this.m_Elements.push(new VertexBufferElement(gl.FLOAT, count, gl.FALSE, attribLocation));
+        this.m_Stride += VertexBufferElement.getSizeOfType(gl.FLOAT) * count;
     }
 
     // push elements(int) in layout
     pushUnsignedInt(count,attribLocation) {
-        this.m_Elements.push(new VertexBufferElement(WebGLRenderingContext.UNSIGNED_INT, count, WebGLRenderingContext.FALSE, attribLocation));
-        this.m_Stride += VertexBufferElement.getSizeOfType(WebGLRenderingContext.UNSIGNED_INT) * count;
+        this.m_Elements.push(new VertexBufferElement(gl.UNSIGNED_INT, count, gl.FALSE, attribLocation));
+        this.m_Stride += VertexBufferElement.getSizeOfType(gl.UNSIGNED_INT) * count;
     }
 
     // push elements(byte) in layout
     pushUnsignedByte(count,attribLocation) {
-        this.m_Elements.push(new VertexBufferElement(WebGLRenderingContext.UNSIGNED_BYTE, count, WebGLRenderingContext.TRUE, attribLocation));
-        this.m_Stride += VertexBufferElement.getSizeOfType(WebGLRenderingContext.UNSIGNED_BYTE) * count;
+        this.m_Elements.push(new VertexBufferElement(gl.UNSIGNED_BYTE, count, gl.TRUE, attribLocation));
+        this.m_Stride += VertexBufferElement.getSizeOfType(gl.UNSIGNED_BYTE) * count;
     }
   }
 

@@ -1,5 +1,5 @@
 import { Component } from "../component/component.js";
-import { getWebGLCanvas, getWebGLCanvasHeight, getWebGLCanvasRatio, getWebGLCanvasWidth, getWebGLContext } from "../../canvas/utils.js";
+import { getWebGLCanvas, getWebGLCanvasHeight, getWebGLCanvasRatio, getWebGLCanvasWidth, gl } from "../../canvas/utils.js";
 
 class CameraComponent extends Component{
   constructor(type = "perspective") {
@@ -13,9 +13,9 @@ class CameraComponent extends Component{
     this.cameraUp;
 
     //orientation
-    this.yaw = -90.0;
-    this.pitch = 0.0;
-    this.roll = 0.0;
+    this.yaw;
+    this.pitch;
+    this.roll;
 
     //matrix
     this.identityMatrix = mat4.create();
@@ -35,14 +35,20 @@ class CameraComponent extends Component{
 
   initCamera(){
     //camera vectors
-    this.cameraPos = vec3.fromValues(4.0, 3.0, 12.0);
-    this.cameraFront = vec3.fromValues(0.0, 0.0, -1.0);
+    this.cameraPos = vec3.fromValues(12.0, 6.0, 12.0);
+    this.cameraFront = vec3.fromValues(-1.0, 0.0, -1.0);
     this.cameraUp = vec3.fromValues(0.0, 1.0, 0.0);
 
     //orientation
-    this.yaw = -90.0;
-    this.pitch = 0.0;
+    this.yaw = -135.0;
+    this.pitch = -30.0;
     this.roll = 0.0;
+
+    let direction = vec3.create();
+    direction[0] = Math.cos(this.yaw * Math.PI / 180.0) * Math.cos(this.pitch * Math.PI / 180.0);
+    direction[1] = Math.sin(this.pitch * Math.PI / 180.0);
+    direction[2] = Math.sin(this.yaw * Math.PI / 180.0) * Math.cos(this.pitch * Math.PI / 180.0);
+    vec3.normalize(this.cameraFront, direction);
 
     //identity matrix
     this.identityMatrix = mat4.create();
@@ -199,7 +205,6 @@ class CameraComponent extends Component{
   resize() {
     // Update WebGL canvas size
     const canvas = getWebGLCanvas();
-    const gl = getWebGLContext();
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 

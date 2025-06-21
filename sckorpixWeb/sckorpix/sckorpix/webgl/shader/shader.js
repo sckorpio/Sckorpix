@@ -1,10 +1,10 @@
-import { getWebGLContext, getWebGLResourceID } from "../../canvas/utils.js";
+import { gl, getWebGLResourceID } from "../../canvas/utils.js";
 
 class Shader {
   constructor() {
     this.uniqueID = getWebGLResourceID();
     this.shaderName = '';
-    this.filePath = '';
+    this.shaderFilePath = '';
     this.vertexShaderSource = '';
     this.fragmentShaderSource = '';
     this.shaderProgram = null;
@@ -13,7 +13,6 @@ class Shader {
   // Destructor for cleanup
   dispose() {
     if (this.shaderProgram) {
-      const gl = getWebGLContext();
       gl.deleteProgram(this.shaderProgram);
     }
   }
@@ -22,9 +21,9 @@ class Shader {
   async generate(shaderName) {
     this.shaderProgram = null;
     this.shaderName = shaderName;
-    this.filePath = "sckorpix/resources/shaders/" + shaderName + ".txt";
+    this.shaderFilePath = "sckorpix/resources/shaders/" + shaderName + ".txt";
 
-    const source = await this.parseShader(this.filePath);
+    const source = await this.parseShader(this.shaderFilePath);
 
     const vertexShaderID = this.compileShader(source.vertexSource, 'vertex');
     const fragmentShaderID = this.compileShader(source.fragmentSource, 'fragment');
@@ -34,8 +33,8 @@ class Shader {
   }
 
   // parsing shader text files
-  async parseShader(filepath) {
-    const response = await fetch(filepath);
+  async parseShader(shaderFilePath) {
+    const response = await fetch(shaderFilePath);
     const shaderCode = await response.text();
 
     const shaderSource = { vertexSource: '', fragmentSource: '' };
@@ -64,7 +63,6 @@ class Shader {
 
   // compile shader
   compileShader(shaderSource, type) {
-    const gl = getWebGLContext();
     const shaderType = type === 'vertex' ? gl.VERTEX_SHADER : gl.FRAGMENT_SHADER;
 
     const shaderID = gl.createShader(shaderType);
@@ -87,7 +85,6 @@ class Shader {
   }
 
   linkProgram(vertexShaderID, fragmentShaderID) {
-    const gl = getWebGLContext();
     const programID = gl.createProgram();
 
     if (!programID) {
@@ -125,7 +122,6 @@ class Shader {
   // Bind
   bind() {
     //console.log("Bind() Shader =",this.uniqueID);
-    const gl = getWebGLContext();
     if (this.shaderProgram) {
       gl.useProgram(this.shaderProgram);
     }
@@ -134,61 +130,51 @@ class Shader {
   // unbind
   unbind() {
     //console.log("UnBind() Shader =",this.uniqueID);
-    const gl = getWebGLContext();
     gl.useProgram(null);
   }
 
   //get AttribLocation from shader
   getAttribLocation(name) {
-    const gl = getWebGLContext();
     return gl.getAttribLocation(this.shaderProgram, name);
   }
 
   // Setters for uniform variables
   setUniform1i(name, value) {
-    const gl = getWebGLContext();
     const location = this.getUniformLocation(name);
     gl.uniform1i(location, value);
   }
 
   setUniform1iv(name, count, value) {
-    const gl = getWebGLContext();
     const location = this.getUniformLocation(name);
     gl.uniform1iv(location, value);
   }
 
   setUniform1f(name, value) {
-    const gl = getWebGLContext();
     const location = this.getUniformLocation(name);
     gl.uniform1f(location, value);
   }
 
   setUniform3f(name, v0, v1, v2) {
-    const gl = getWebGLContext();
     const location = this.getUniformLocation(name);
     gl.uniform3f(location, v0, v1, v2);
   }
 
   setUniform4f(name, v0, v1, v2, v3) {
-    const gl = getWebGLContext();
     const location = this.getUniformLocation(name);
     gl.uniform4f(location, v0, v1, v2, v3);
   }
 
   setUniform3fv(name, vec) {
-    const gl = getWebGLContext();
     const location = this.getUniformLocation(name);
     gl.uniform3fv(location, vec);
   }
 
   setUniformMat4f(name, matrix) {
-    const gl = getWebGLContext();
     const location = this.getUniformLocation(name);
     gl.uniformMatrix4fv(location, false, matrix);
   }
 
   getUniformLocation(name) {
-    const gl = getWebGLContext();
     const location = gl.getUniformLocation(this.shaderProgram, name);
     if (location === null) {
       console.error(`${name} - not exist`);

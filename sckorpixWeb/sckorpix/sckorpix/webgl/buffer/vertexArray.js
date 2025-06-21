@@ -1,4 +1,4 @@
-import { getWebGLContext, getWebGLResourceID } from "../../canvas/utils.js";
+import { gl, getWebGLResourceID } from "../../canvas/utils.js";
 import { VertexBufferElement } from "./vertexBufferLayout.js";
 class VertexArray {
     constructor() {
@@ -8,7 +8,6 @@ class VertexArray {
 
     // Generates vertex array 
     generate() {
-        const gl = getWebGLContext();
         // Create a new vertex array object
         this.vertexArray = gl.createVertexArray();
         // Bind the vertex array 
@@ -17,7 +16,6 @@ class VertexArray {
 
     // Adds a vertex buffer and its layout to the vertex array
     addBuffer(vb, layout) {
-        const gl = getWebGLContext();
         // Bind the vertex buffer
         vb.bind();
 
@@ -47,13 +45,11 @@ class VertexArray {
 
     // Binds
     bind() {
-        const gl = getWebGLContext();
         gl.bindVertexArray(this.vertexArray);
     }
 
     // unbinds
     unbind() {
-        const gl = getWebGLContext();
         gl.bindVertexArray(null);
     }
 }

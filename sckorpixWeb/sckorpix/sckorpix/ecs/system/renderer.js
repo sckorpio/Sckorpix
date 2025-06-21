@@ -1,5 +1,5 @@
 import { logger } from "../../canvas/logger.js";
-import { getWebGLContext } from "../../canvas/utils.js";
+import { gl } from "../../canvas/utils.js";
 
 
 class Renderer {
@@ -20,12 +20,10 @@ class Renderer {
     }
 
     enableDepthTest() {
-        const gl = getWebGLContext();
         gl.enable(gl.DEPTH_TEST);
     }
 
     clear() {
-        const gl = getWebGLContext();
         gl.clearColor(this.clearColor[0], this.clearColor[1], this.clearColor[2], 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     }
@@ -49,11 +47,9 @@ class Renderer {
     }
 
     render() {
-        const gl = getWebGLContext();
         // Clear the canvas and enable WebGL states
         this.init();
 
-        
         // Render each mesh from the mesh list
         this.entityList.forEach(async (entity) => {
             

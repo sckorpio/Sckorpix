@@ -1,5 +1,6 @@
 import { getWebGLResourceID } from "../../canvas/utils.js";
 import { Shader } from "../shader/shader.js";
+import { Texture } from "../texture/texture.js";
 
 class Material{
     constructor(name = "basic3D") {
@@ -20,8 +21,20 @@ class Material{
         this.shader.setUniform3f("uColor",r,g,b);
     }
 
-    setTexture(textureName){
-        this.texture = textureName;
+    async setTexture(
+        textureName = "basicTexture",
+        wrapX = "CLAMP_TO_EDGE",
+        wrapY = "CLAMP_TO_EDGE"){
+        //Using Texture class
+        this.texture = new Texture();
+        this.texture.setTextureWrapX(wrapX);
+        this.texture.setTextureWrapY(wrapY);
+        await this.texture.generate(textureName);
+    }
+
+    setTextureWrap(wrapX,wrapY){
+        this.texture.setTextureWrapX(wrapX);
+        this.texture.setTextureWrapY(wrapY);
     }
 
 }
