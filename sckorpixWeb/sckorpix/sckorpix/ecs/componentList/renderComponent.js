@@ -37,10 +37,12 @@ class RenderComponent{
         this.layout = new VertexBufferLayout();
         let layoutSize = 0;
         let attribLocation;
+    
         layoutData.forEach((layoutDataElement) => {
+
             //finding attrib location from attached shader
             attribLocation = this.shader.getAttribLocation(layoutDataElement.name);
-        
+
             //creating layout
             if(layoutDataElement.type == "float"){
                 this.layout.pushFloat(layoutDataElement.count,attribLocation);
@@ -87,6 +89,12 @@ class RenderComponent{
         this.texture = material.texture;
     }
 
+    setColor(){
+        if(this.shader.shaderName == "basic3D"){
+            this.shader.setUniform3fv("uColor",this.material.color);
+        }
+    }
+
     setMVP(model,view,projection){
         // set MVP
         this.shader.setUniformMat4f("uModel",model);
@@ -105,6 +113,7 @@ class RenderComponent{
         //bind shader
         this.shader.bind();
 
+        //console.log("is textur?? =",this.texture);
         //bind texture
         if(this.texture){
             this.texture.bind();
@@ -112,7 +121,8 @@ class RenderComponent{
     }
 
     unbind(){
-        //Unbind GPU buffers (NOTE:Keep order stict like this)
+        //Unbind GPU buffers (NOTE:Keep order strict like this)
+        console.log("VA=",this.vertexArray);
         this.vertexArray.unbind();
         this.vertexBuffer.unbind();
         if(this.useElements){

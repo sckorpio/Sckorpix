@@ -5,8 +5,8 @@ class Texture {
     this.uniqueID = getWebGLResourceID();
     this.textureName = '';
     this.textureFilePath = '';
-    this.textureWrapX = "CLAMP_TO_EDGE";
-    this.textureWrapY = "CLAMP_TO_EDGE";
+    this.textureWrapX = "REPEAT";
+    this.textureWrapY = "REPEAT";
     this.texture;
   }
 
@@ -18,6 +18,7 @@ class Texture {
     this.textureFilePath = "sckorpix/resources/textures/" + textureName + ".png";
     //Create a texture
     this.texture = gl.createTexture();
+
 
     //load image
     var image = new Image();
@@ -69,11 +70,11 @@ class Texture {
     //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
   }
 
-  setTextureWrapX(wrapValueX = "CLAMP_TO_EDGE"){
+  setTextureWrapX(wrapValueX = "REPEAT"){
     this.textureWrapX = wrapValueX;
   }
 
-  setTextureWrapY(wrapValueY = "CLAMP_TO_EDGE"){
+  setTextureWrapY(wrapValueY = "REPEAT"){
     this.textureWrapY = wrapValueY;
   }
 
@@ -81,18 +82,17 @@ class Texture {
     switch(this.textureWrapX){
         case "REPEAT": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT); break;
         case "CLAMP_TO_EDGE": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); break;
-        case "CLAMP_TO_EDGE": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT); break;
+        case "MIRRORED_REPEAT": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT); break;
     }
     switch(this.textureWrapY){
         case "REPEAT": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT); break;
         case "CLAMP_TO_EDGE": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); break;
-        case "CLAMP_TO_EDGE": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT); break;
+        case "MIRRORED_REPEAT": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT); break;
     }
   }
 
   //bind texture
   bind(){
-    //console.log("Bind() Shader =",this.uniqueID);
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
   }
 

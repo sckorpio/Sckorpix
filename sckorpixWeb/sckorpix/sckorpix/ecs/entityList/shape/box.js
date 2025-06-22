@@ -9,9 +9,19 @@ class Box extends Shape {
     constructor(options = { mode: 'basic' }) {
         super();
         this.mode = options.mode;
-        this.uvRange = options.uvRange;
-        this.addMeshComponent();
+        this.uvRange = [0, 0, 1, 1];
+        if(options.uvRange){
+            this.uvRange = options.uvRange;
+        }
+        
         this.setMeshComponentData();
+    }
+
+    setMode(mode){
+        this.mode = mode;
+        this.setMeshComponentData();
+        this.meshComponent.unloadGPUData();
+        this.meshComponent.loadGPUData();
     }
 
     setMeshComponentData(){
@@ -21,12 +31,6 @@ class Box extends Shape {
             case 'colorVertex': this.setColorVertexMeshComponentData(); break;
             case 'textureFace': this.setTextureFaceMeshComponentData(this.uvRange); break;
         }
-    }
-
-    setMode(mode){
-        this.mode = mode;
-        this.setMeshComponentData();
-        this.meshComponent.loadGPUData();
     }
 
     setBasicBoxMeshComponentData(){
@@ -133,11 +137,11 @@ class Box extends Shape {
         this.meshComponent.verticesData = [
             // back
             -0.5, -0.5, -0.5, uMin, vMin,
-            0.5, -0.5, -0.5, uMin, vMin,
-            0.5, 0.5, -0.5, uMin, vMax,
-            0.5, 0.5, -0.5, uMin, vMax,
-            -0.5, 0.5, -0.5, uMax, vMax,
-            -0.5, -0.5, -0.5, uMax, vMin,
+            0.5, -0.5, -0.5, uMax, vMin,
+            0.5, 0.5, -0.5, uMax, vMax,
+            0.5, 0.5, -0.5, uMax, vMax,
+            -0.5, 0.5, -0.5, uMin, vMax,
+            -0.5, -0.5, -0.5, uMin, vMin,
 
             // front
             -0.5, -0.5, 0.5, uMin, vMin,
@@ -181,7 +185,7 @@ class Box extends Shape {
         ];
     }
 
-    getDefaultBoxIndices() {
+    getDefaultBoxIndices(){
         return [
             // Front face
             0, 1, 2,

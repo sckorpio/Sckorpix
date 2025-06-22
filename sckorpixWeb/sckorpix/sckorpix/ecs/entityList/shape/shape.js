@@ -1,6 +1,7 @@
 import { Entity } from "../../entity/entity.js";
 import { TransformComponent } from "../../componentList/transformComponent.js";
 import { MeshComponent } from "../../componentList/meshComponent.js";
+import { MaterialBook } from "../../../webgl/material/materialBook.js";
 
 class Shape extends Entity{
     constructor(){
@@ -9,6 +10,7 @@ class Shape extends Entity{
         this.transformComponent = null;
         this.meshComponent = null;
         this.addTransformComponent();
+        this.addMeshComponent();
     }
 
     addTransformComponent(){
@@ -28,22 +30,21 @@ class Shape extends Entity{
         this.transformComponent.setRotation(rotation);
     }
 
+    addMeshComponent() {
+        this.meshComponent = new MeshComponent();
+    }
+
     setVisible(visible){
         this.meshComponent.setVisible(visible);
     }
 
-    addMeshComponent() {
-        this.meshComponent = new MeshComponent();
+    setMaterial(materialName){
+        this.meshComponent.renderComponent.setMaterial(MaterialBook.getInstance().getMaterial(materialName));
     }
 
     setTextureRepeat(repeatX,repeatY){
         this.meshComponent.setTextureRepeat(repeatX,repeatY);
     }
-
-    setMaterial(material){
-        this.meshComponent.renderComponent.setMaterial(material);
-    }
-
 }
 
 export{

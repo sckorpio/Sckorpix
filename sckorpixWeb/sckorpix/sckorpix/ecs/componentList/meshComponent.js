@@ -49,6 +49,10 @@ class MeshComponent extends Component{
     getTextureUV(){
         return this.textureUV;
     }
+    
+    unloadGPUData(){
+        this.renderComponent.unbind();
+    }
 
     loadGPUData(){
         this.renderComponent.setData(this.layout,this.verticesData,this.indexData);

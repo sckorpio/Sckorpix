@@ -3,6 +3,9 @@ import { Camera } from "../ecs/entityList/camera/camera.js";
 import { Grid } from "../ecs/entityList/shape/grid.js";
 import { Renderer } from "../ecs/system/renderer.js";
 import { Material } from "../webgl/material/material.js";
+import { ShaderBook } from "../webgl/shader/shaderBook.js";
+import { MaterialBook } from "../webgl/material/materialBook.js";
+import { TextureBook } from "../webgl/texture/textureBook.js";
 
 class Scene {
     constructor(){
@@ -12,10 +15,8 @@ class Scene {
         this.defaultEntitiesList = [];
         this.entitiesList = [];
 
-        this.materialRed;
-        this.materialGreen;
-        this.materialBlue;
-        this.materialWhite;
+        this.shaderBook;
+        this.materialBook;
 
         this.grid;
         this.xAxis;
@@ -37,8 +38,32 @@ class Scene {
         this.camera = new Camera();
         this.renderer.setCamera(this.camera);
 
-        await this.createDefaultMaterial();
+        /*
+        SHADER_BOOK
+        */
+        this.shaderBook = ShaderBook.getInstance();
+        await this.shaderBook.generateDefaultShaders();
+
+        /*
+        TEXTURE_BOOK
+        */
+        this.textureBook = TextureBook.getInstance();
+        await this.textureBook.generateDefaultTextures();
+
+        /*
+        MATERIAL_BOOK
+        */
+        this.materialBook = MaterialBook.getInstance();
+        this.materialBook.generateDefaultMaterials();
+    
+        /*
+        ENTITIES
+        */
         this.createDefaultEntities();
+
+        /*
+        EVENT_LISTENERS
+        */
         this.setEventlisteners();
     }
 
@@ -53,55 +78,30 @@ class Scene {
             this.setAxisVisibility(this.isAxisVisible);
           }
         });
-      }
-
-    async createDefaultMaterial(){
-        /*
-        MATERIALS
-        */
-        this.materialRed = new Material();
-        await this.materialRed.setShader("basic3D");
-        this.materialRed.setColor(1.0,0.0,0.0);
-
-        this.materialGreen = new Material();
-        await this.materialGreen.setShader("basic3D");
-        this.materialGreen.setColor(0.0,1.0,0.0);
-
-        this.materialBlue = new Material();
-        await this.materialBlue.setShader("basic3D");
-        this.materialBlue.setColor(0.0,0.0,1.0);
-
-        this.materialWhite = new Material();
-        await this.materialWhite.setShader("basic3D");
-        this.materialWhite.setColor(0.2,0.2,0.2);
     }
 
     createDefaultEntities(){
-        /*
-        GRID
-        */
-
         //Grid
         this.grid = new Grid(100,1.0);
-        this.grid.setMaterial(this.materialWhite);
+        this.grid.setMaterial("basicGrey");
 
         //x-Axis
         this.xAxis = new Box();
         this.xAxis.setPosition(vec3.fromValues(50.0, 0.0, 0.0));
         this.xAxis.setScale(vec3.fromValues(100.0, 0.02, 0.02));
-        this.xAxis.setMaterial(this.materialRed);
+        this.xAxis.setMaterial("basicRed");
 
         //y-Axis
         this.yAxis = new Box();
         this.yAxis.setPosition(vec3.fromValues(0.0, 50.0, 0.0));
         this.yAxis.setScale(vec3.fromValues(0.02, 100.0, 0.02));
-        this.yAxis.setMaterial(this.materialGreen);
+        this.yAxis.setMaterial("basicGreen");
 
         //z-Axis
         this.zAxis = new Box();
         this.zAxis.setPosition(vec3.fromValues(0.0, 0.0, 50.0));
         this.zAxis.setScale(vec3.fromValues(0.02, 0.02, 100.0));
-        this.zAxis.setMaterial(this.materialBlue);
+        this.zAxis.setMaterial("basicBlue");
 
         //add meshes to default list
         this.defaultEntitiesList.push(this.grid);

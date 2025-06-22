@@ -6,15 +6,14 @@ class Sphere extends Shape{
         //constructor of Shape
         super();
 
+        //Sphere data
         this.radius = radius;
         this.latitudeBands = latitudeBands;
         this.longitudeBands = longitudeBands;
-        this.addMeshComponent();
+        this.setMeshComponentData();
     }
 
-    addMeshComponent(){
-        this.meshComponent = new MeshComponent();
-
+    setMeshComponentData(){
         //layout
         this.meshComponent.layout = [
             {type:"float",count:3,name:"vertPosition"}

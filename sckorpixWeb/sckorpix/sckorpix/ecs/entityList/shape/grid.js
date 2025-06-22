@@ -9,12 +9,10 @@ class Grid extends Shape{
         //grid data
         this.gridCount = gridCount;
         this.gridGap = gridGap;
-        this.addMeshComponent();
+        this.setMeshComponentData();
     }
 
-    addMeshComponent(){
-        this.meshComponent = new MeshComponent();
-
+    setMeshComponentData(){
         //layout
         this.meshComponent.layout = [
             {type:"float",count:3,name:"vertPosition"}

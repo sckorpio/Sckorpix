@@ -8,28 +8,22 @@ class Material{
         this.name = name;
         this.shader;
         this.texture;
+        this.color;
     }
 
-    async setShader(shaderName = "basic3D"){
-        //Using shader class
-        this.shader = new Shader();
-        await this.shader.generate(shaderName);
+    setShader(shader){
+        //Set Shader
+        this.shader = shader;
     }
 
     setColor(r,g,b){
         //Set Color
-        this.shader.setUniform3f("uColor",r,g,b);
+        this.color = vec3.fromValues(r, g, b);
     }
 
-    async setTexture(
-        textureName = "basicTexture",
-        wrapX = "CLAMP_TO_EDGE",
-        wrapY = "CLAMP_TO_EDGE"){
-        //Using Texture class
-        this.texture = new Texture();
-        this.texture.setTextureWrapX(wrapX);
-        this.texture.setTextureWrapY(wrapY);
-        await this.texture.generate(textureName);
+    setTexture(texture){
+        //Set Texture
+        this.texture = texture;
     }
 
     setTextureWrap(wrapX,wrapY){

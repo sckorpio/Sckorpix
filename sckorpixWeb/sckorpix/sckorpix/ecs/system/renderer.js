@@ -1,7 +1,6 @@
 import { logger } from "../../canvas/logger.js";
 import { gl } from "../../canvas/utils.js";
 
-
 class Renderer {
     constructor() {
         this.uid = 0;
@@ -40,7 +39,7 @@ class Renderer {
         this.entityList = this.entityList.concat(entityList);
     }
 
-    loadEntityDataToGPU(){
+    loadEntityDataToGPU() {
         this.entityList.forEach((entity)=>{
             entity.meshComponent.loadGPUData();
         })
@@ -65,6 +64,8 @@ class Renderer {
                     this.cameraEntity.cameraComponent.getViewMatrix(),
                     this.cameraEntity.cameraComponent.getProjectionMatrix()
                 );
+
+                renderComponent.setColor();
 
                 //DrawCall
                 if(renderComponent.useElements){
