@@ -9,6 +9,7 @@ class MaterialBook {
         }
 
         this.defaultMaterials = new Map();
+        this.customMaterials = new Map();
 
         MaterialBook._instance = this;
     }
@@ -25,7 +26,7 @@ class MaterialBook {
         let shaderBook = ShaderBook.getInstance();
         let textureBook = TextureBook.getInstance();
 
-        //Basic Color Materials
+        //Fixed Color Materials
         let basicRedMaterial = new Material("basicRed");
         basicRedMaterial.setShader(shaderBook.getShader("basic3D"));
         basicRedMaterial.setColor(1.0,0.0,0.0);
@@ -75,6 +76,25 @@ class MaterialBook {
         brickTextureMaterial.setTexture(textureBook.getTexture("brick"));
         this.defaultMaterials.set("brick",brickTextureMaterial);
 
+    }
+
+    createBasicMaterial(){
+        //Diffuse Material
+        let diffuseMaterial = new Material("diffuseMaterial");
+        diffuseMaterial.setShader(ShaderBook.getInstance().getShader("basic3D"));
+        diffuseMaterial.setColor(1.0,1.0,1.0);
+        this.customMaterials.set("diffuseMaterial",diffuseMaterial);
+        return diffuseMaterial;
+    }
+
+    createTextureMaterial(){
+        //Texture Material
+        let textureMaterial = new Material("textureMaterial");
+        textureMaterial.setShader(ShaderBook.getInstance().getShader("textureVertex3D"));
+        textureMaterial.setColor(1.0,1.0,1.0);
+        textureMaterial.setTexture(TextureBook.getInstance().getTexture("sckorpixTexture"));
+        this.customMaterials.set("textureMaterial",textureMaterial);
+        return textureMaterial;
     }
 
     getMaterial(materialName) {

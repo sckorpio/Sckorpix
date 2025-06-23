@@ -42,8 +42,8 @@ class MeshComponent extends Component{
         this.renderComponent.setMaterial(this.material);
     }
 
-    getMaterial(material){
-        this.material = material;
+    getMaterial(){
+        return this.material;
     }
 
     getTextureUV(){

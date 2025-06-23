@@ -14,6 +14,9 @@ class Sphere extends Shape{
     }
 
     setMeshComponentData(){
+        //basic material
+        this.setBasicMaterial();
+        
         //layout
         this.meshComponent.layout = [
             {type:"float",count:3,name:"vertPosition"}

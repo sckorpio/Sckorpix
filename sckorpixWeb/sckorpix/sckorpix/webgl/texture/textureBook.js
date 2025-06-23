@@ -6,12 +6,21 @@ class TextureBook {
             return TextureBook._instance;
         }
 
-        this.defaultTextures = new Map();
-        this.defaultTexturesName = [
-            "wood",
+        //default textures
+        this.defaultTexturesPath = "sckorpix/resources/textures/";
+        this.defaultTextureNames = [
+            "sckorpixTexture",
+            "grass",
+            "woodCarton",
             "brick"
         ];
+        this.defaultTextures = new Map();
 
+        //custom user textures
+        this.customTexturesPath;
+        this.customTextureNames = [];
+        this.customTextures = new Map();
+        
         TextureBook._instance = this;
     }
 
@@ -23,16 +32,32 @@ class TextureBook {
     }
 
     async generateDefaultTextures() {
-        for (const textureName of this.defaultTexturesName) {
+        for (const textureName of this.defaultTextureNames) {
             //Using Texture class
-            let texture = new Texture();
-            await texture.generate(textureName);
+            let texture = new Texture(textureName);
+            await texture.generate(this.defaultTexturesPath+textureName+".png");
+            this.defaultTextures.set(textureName,texture);
+        }
+    }
+
+    async generateCustomTextures(projectName,customTextureNames) {
+        this.customTextureNames = customTextureNames;
+        this.customTexturesPath = "projects/"+projectName+"/resources/textures/";
+        for (const textureName of this.customTextureNames) {
+            //Using Texture class
+            let texture = new Texture(textureName);
+            await texture.generate(this.customTexturesPath+textureName+".png");
             this.defaultTextures.set(textureName,texture);
         }
     }
 
     getTexture(textureName) {
-        return this.defaultTextures.get(textureName) || null;
+        if(this.defaultTextures.has(textureName)){
+            return this.defaultTextures.get(textureName);
+        } else if(this.customTextures.has(textureName)){
+            return this.customTextures.get(textureName);
+        }
+        return null;
     }
 }
 

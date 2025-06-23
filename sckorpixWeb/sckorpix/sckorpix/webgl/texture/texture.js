@@ -1,9 +1,9 @@
 import { gl, getWebGLResourceID } from "../../canvas/utils.js";
 
 class Texture {
-  constructor() {
+  constructor(textureName) {
     this.uniqueID = getWebGLResourceID();
-    this.textureName = '';
+    this.textureName = textureName;
     this.textureFilePath = '';
     this.textureWrapX = "REPEAT";
     this.textureWrapY = "REPEAT";
@@ -11,19 +11,19 @@ class Texture {
   }
 
   // Generate a Texture
-  async generate(textureName) {
-    //set texture name
-    this.textureName = textureName;
+  async generate(texturePath) {
     //set texture path
-    this.textureFilePath = "sckorpix/resources/textures/" + textureName + ".png";
+    this.textureFilePath = texturePath;
     //Create a texture
     this.texture = gl.createTexture();
-
 
     //load image
     var image = new Image();
     image.src = this.textureFilePath;
     image.addEventListener('load', ()=> {
+        // Flip Y-axis on image upload
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        
         //copy loaded image to texture
         gl.bindTexture(gl.TEXTURE_2D,this.texture);
         gl.texImage2D(

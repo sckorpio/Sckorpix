@@ -2,6 +2,7 @@ import { Entity } from "../../entity/entity.js";
 import { TransformComponent } from "../../componentList/transformComponent.js";
 import { MeshComponent } from "../../componentList/meshComponent.js";
 import { MaterialBook } from "../../../webgl/material/materialBook.js";
+import { TextureBook } from "../../../webgl/texture/textureBook.js";
 
 class Shape extends Entity{
     constructor(){
@@ -38,8 +39,24 @@ class Shape extends Entity{
         this.meshComponent.setVisible(visible);
     }
 
-    setMaterial(materialName){
-        this.meshComponent.renderComponent.setMaterial(MaterialBook.getInstance().getMaterial(materialName));
+    setDefaultMaterial(materialName){
+        this.meshComponent.setMaterial(MaterialBook.getInstance().getMaterial(materialName));
+    }
+
+    setBasicMaterial(){
+        this.meshComponent.setMaterial(MaterialBook.getInstance().createBasicMaterial());
+    }
+
+    setTextureMaterial(){
+        this.meshComponent.setMaterial(MaterialBook.getInstance().createTextureMaterial());
+    }
+
+    setColor(r,g,b){
+        this.meshComponent.material.setColor(r,g,b);
+    }
+
+    setTexture(textureName){
+        this.meshComponent.material.setTexture(TextureBook.getInstance().getTexture(textureName));
     }
 
     setTextureRepeat(repeatX,repeatY){

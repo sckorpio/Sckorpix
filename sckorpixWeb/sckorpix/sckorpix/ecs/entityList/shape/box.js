@@ -34,6 +34,10 @@ class Box extends Shape {
     }
 
     setBasicBoxMeshComponentData(){
+        //basic material
+        this.setBasicMaterial();
+
+        //buffer data
         this.meshComponent.layout = [
             { type: "float", count: 3, name: "vertPosition" }
         ];
@@ -54,6 +58,10 @@ class Box extends Shape {
     }
 
     setColorFaceMeshComponentData(){
+        //colorFace Material
+        this.setDefaultMaterial("colorVertex");
+
+        //buffer data
         this.meshComponent.layout = [
             { type: "float", count: 3, name: "vertPosition" },
             { type: "float", count: 3, name: "vertColor" }
@@ -106,6 +114,10 @@ class Box extends Shape {
     }
 
     setColorVertexMeshComponentData(){
+        //colorFace Material
+        this.setDefaultMaterial("colorVertex");
+
+        //buffer data
         this.meshComponent.layout = [
             { type: "float", count: 3, name: "vertPosition" },
             { type: "float", count: 3, name: "vertColor" }
@@ -127,6 +139,10 @@ class Box extends Shape {
     }
 
     setTextureFaceMeshComponentData(uvRange){
+        //texture material
+        this.setTextureMaterial();
+
+        //buffer data
         this.meshComponent.layout = [
             { type: "float", count: 3, name: "vertPosition" },
             { type: "float", count: 2, name: "vertUV" }
@@ -136,12 +152,12 @@ class Box extends Shape {
 
         this.meshComponent.verticesData = [
             // back
-            -0.5, -0.5, -0.5, uMin, vMin,
-            0.5, -0.5, -0.5, uMax, vMin,
-            0.5, 0.5, -0.5, uMax, vMax,
-            0.5, 0.5, -0.5, uMax, vMax,
-            -0.5, 0.5, -0.5, uMin, vMax,
-            -0.5, -0.5, -0.5, uMin, vMin,
+            -0.5, -0.5, -0.5, uMax, vMin,
+            0.5, -0.5, -0.5, uMin, vMin,
+            0.5, 0.5, -0.5, uMin, vMax,
+            0.5, 0.5, -0.5, uMin, vMax,
+            -0.5, 0.5, -0.5, uMax, vMax,
+            -0.5, -0.5, -0.5, uMax, vMin,
 
             // front
             -0.5, -0.5, 0.5, uMin, vMin,

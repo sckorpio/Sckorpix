@@ -7,6 +7,7 @@ import { gl } from "../../canvas/utils.js";
 class RenderComponent{
     constructor() {
         this.uid = 0;
+        //geometry data
         this.vertexArray;
         this.vertexBuffer;
         this.layout;
@@ -16,10 +17,8 @@ class RenderComponent{
         this.topology = gl.TRIANGLES;
         this.offset = 0;
         this.count;
-
+        //material
         this.material;
-        this.shader;
-        this.texture;
     }
 
     setData(layoutData,verticesData,indexData){
@@ -41,7 +40,7 @@ class RenderComponent{
         layoutData.forEach((layoutDataElement) => {
 
             //finding attrib location from attached shader
-            attribLocation = this.shader.getAttribLocation(layoutDataElement.name);
+            attribLocation = this.material.shader.getAttribLocation(layoutDataElement.name);
 
             //creating layout
             if(layoutDataElement.type == "float"){
@@ -85,21 +84,19 @@ class RenderComponent{
     setMaterial(material){
         //set material
         this.material = material;
-        this.shader = material.shader;
-        this.texture = material.texture;
     }
 
     setColor(){
-        if(this.shader.shaderName == "basic3D"){
-            this.shader.setUniform3fv("uColor",this.material.color);
+        if(this.material.shader.shaderName == "basic3D"){
+            this.material.shader.setUniform3fv("uColor",this.material.color);
         }
     }
 
     setMVP(model,view,projection){
         // set MVP
-        this.shader.setUniformMat4f("uModel",model);
-        this.shader.setUniformMat4f("uView",view);
-        this.shader.setUniformMat4f("uProjection",projection);
+        this.material.shader.setUniformMat4f("uModel",model);
+        this.material.shader.setUniformMat4f("uView",view);
+        this.material.shader.setUniformMat4f("uProjection",projection);
     }
 
     bind(){
@@ -111,18 +108,17 @@ class RenderComponent{
         }
         
         //bind shader
-        this.shader.bind();
+        this.material.shader.bind();
 
         //console.log("is textur?? =",this.texture);
         //bind texture
-        if(this.texture){
-            this.texture.bind();
+        if(this.material.texture){
+            this.material.texture.bind();
         }
     }
 
     unbind(){
         //Unbind GPU buffers (NOTE:Keep order strict like this)
-        console.log("VA=",this.vertexArray);
         this.vertexArray.unbind();
         this.vertexBuffer.unbind();
         if(this.useElements){
@@ -130,11 +126,11 @@ class RenderComponent{
         }
 
         //Unbind shader
-        this.shader.unbind();
+        this.material.shader.unbind();
 
         //Unbind texture
         if(this.texture){
-            this.texture.unbind();
+            this.material.texture.unbind();
         }
     }
 }
