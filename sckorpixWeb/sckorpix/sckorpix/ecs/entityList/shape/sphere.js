@@ -1,19 +1,40 @@
 import { Shape } from "./shape.js";
 import { MeshComponent } from "../../componentList/meshComponent.js";
 
+const defaultSphereOptions = {
+    mode: 'basic',
+    radius: 1.0,
+    latitudeBands: 36,
+    longitudeBands: 36
+};
 class Sphere extends Shape{
-    constructor(radius = 1.0, latitudeBands = 36, longitudeBands = 36){
-        //constructor of Shape
+    constructor(options) {
         super();
+        options = Object.assign({}, defaultSphereOptions, options);
 
         //Sphere data
-        this.radius = radius;
-        this.latitudeBands = latitudeBands;
-        this.longitudeBands = longitudeBands;
+        this.mode = options.mode;
+        this.radius = options.radius;
+        this.latitudeBands = options.latitudeBands;
+        this.longitudeBands = options.longitudeBands;
         this.setMeshComponentData();
     }
 
+    setMode(mode){
+        this.mode = mode;
+        this.setMeshComponentData();
+        this.meshComponent.unloadGPUData();
+        this.meshComponent.loadGPUData();
+    }   
+
     setMeshComponentData(){
+        switch (this.mode) {
+            case 'basic': this.setBasicSphereMeshComponentData(); break;
+            // Future modes can be added here
+        }
+    }
+
+    setBasicSphereMeshComponentData(){
         //basic material
         this.setBasicMaterial();
         

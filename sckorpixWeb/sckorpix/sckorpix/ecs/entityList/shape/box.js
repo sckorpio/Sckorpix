@@ -1,18 +1,17 @@
 import { Shape } from "./shape.js";
 
+const defaultBoxOptions = {
+    mode: 'basic',
+    uvRange: [0, 0, 1, 1]
+};
+
 class Box extends Shape {
-    /**
-     * @param {Object} options - options for the box
-     * @param {string} options.mode - Type of box ('basic' | 'colorFace' | 'colorVertex' | 'textureFace')
-     * @param {Array<number>} [options.uvRange] - UV range [uMin, vMin, uMax, vMax] (required for 'textureFace' type)
-     */
-    constructor(options = { mode: 'basic' }) {
+    constructor(options) {
         super();
+        options = Object.assign({}, defaultBoxOptions, options);
+
         this.mode = options.mode;
-        this.uvRange = [0, 0, 1, 1];
-        if(options.uvRange){
-            this.uvRange = options.uvRange;
-        }
+        this.uvRange = options.uvRange;
         
         this.setMeshComponentData();
     }

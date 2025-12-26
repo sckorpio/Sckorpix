@@ -11,34 +11,33 @@ class Texture {
   }
 
   // Generate a Texture
-  async generate(texturePath) {
-    //set texture path
+  async generate(texturePath){
     this.textureFilePath = texturePath;
-    //Create a texture
     this.texture = gl.createTexture();
 
-    //load image
-    var image = new Image();
-    image.src = this.textureFilePath;
-    image.addEventListener('load', ()=> {
-        // Flip Y-axis on image upload
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-        
-        //copy loaded image to texture
-        gl.bindTexture(gl.TEXTURE_2D,this.texture);
-        gl.texImage2D(
-            gl.TEXTURE_2D,
-            0,              // mip level
-            gl.RGBA,        // internal format
-            gl.RGBA,        // format
-            gl.UNSIGNED_BYTE, // type
-            image
-        );
-        gl.generateMipmap(gl.TEXTURE_2D);
-    });
+    // bind and set a 1x1 pixel placeholder immediately
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    gl.texImage2D(
+      gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0,
+      gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([255, 0, 255, 255]) // magenta placeholder
+    );
 
-    //Set Texture Wrap
-    this.setTextureWrap();
+    // set wrap/filter defaults while texture is bound
+    this.setTextureWrap(); // make sure setTextureWrap binds the texture (as in fix above)
+
+    // now actually load image
+    const image = new Image();
+    image.src = this.textureFilePath;
+    await new Promise((resolve, reject) => {
+      image.onload = () => {
+        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+        gl.generateMipmap(gl.TEXTURE_2D);
+        resolve();
+      };
+      image.onerror = reject;
+    });
   }
 
   generatePixelTexture(){
@@ -85,9 +84,9 @@ class Texture {
         case "MIRRORED_REPEAT": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT); break;
     }
     switch(this.textureWrapY){
-        case "REPEAT": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT); break;
-        case "CLAMP_TO_EDGE": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); break;
-        case "MIRRORED_REPEAT": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT); break;
+        case "REPEAT": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT); break;
+        case "CLAMP_TO_EDGE": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); break;
+        case "MIRRORED_REPEAT": gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT); break;
     }
   }
 

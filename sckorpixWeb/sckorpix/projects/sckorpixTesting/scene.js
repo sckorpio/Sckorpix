@@ -1,4 +1,6 @@
 import { Box } from "../../sckorpix/ecs/entityList/shape/box.js";
+import { Cone } from "../../sckorpix/ecs/entityList/shape/cone.js";
+import { Cyclinder } from "../../sckorpix/ecs/entityList/shape/cyclinder.js";
 import { Sphere } from "../../sckorpix/ecs/entityList/shape/sphere.js";
 import { SckorpixScene } from "../../sckorpix/scene/sckorpixScene.js";
 
@@ -74,9 +76,26 @@ class Scene extends SckorpixScene{
         box2.setTexture("woodCarton");
         this.entitiesList.push(box2);
 
-        
+        // Cone
+        let cone = new Cone({ mode: 'basic' });
+        cone.setPosition(vec3.fromValues(-4.0,0.5,0.0));
+        cone.setScale(vec3.fromValues(2.0,3.0,2.0));
+        cone.setColor(0,1,0);
+        this.entitiesList.push(cone);
 
-        
+        // Cone with texture
+        let texturedCone = new Cone({ mode: 'textureFace' });
+        texturedCone.setPosition(vec3.fromValues(-8.0,10.0,0.0));
+        texturedCone.setScale(vec3.fromValues(2.0,3.0,2.0));
+        texturedCone.setTexture("grass");
+        this.entitiesList.push(texturedCone);
+
+        // Cyclinder
+        let cyclinder = new Cyclinder({ mode: 'basic' });
+        cyclinder.setPosition(vec3.fromValues(-8.0,8.0,0.0));
+        cyclinder.setScale(vec3.fromValues(1.0,3.0,1.0));
+        cyclinder.setColor(1,0,0);
+        this.entitiesList.push(cyclinder);
         
     }
 }
