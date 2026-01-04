@@ -73,7 +73,7 @@ class Logger {
     context2D.fillStyle = 'cyan';
     context2D.shadowColor = 'cyan';
     context2D.shadowBlur = 70;
-    context2D.fillText(this.frameTime.toString()+ " ms", 180, 50);
+    context2D.fillText(this.frameTime.toFixed(0).toString()+ " ms", 180, 50);
 
     //DrawCall
     //TODO:
