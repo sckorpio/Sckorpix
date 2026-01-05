@@ -11,7 +11,7 @@ class Title {
     
         // Load the image
         const img = new Image();
-        img.src = "sckorpix/resources/textures/sckorpixIcon.png"; // Use correct path or URL
+        img.src = "sckorpix/resources/textures/logo/sckorpixIcon.png"; // Use correct path or URL
     
         img.onload = function () {
             // add glow effect
