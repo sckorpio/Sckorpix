@@ -29,14 +29,16 @@ class Scene extends SckorpixScene{
         */
         
         // Ground
+        /*
         let ground = new Box({mode: 'textureFace', uvRange: [0, 0, 50, 50]});
         ground.setPosition(vec3.fromValues(0.0,-0.1,0.0));
         ground.setScale(vec3.fromValues(100.0,0.02,100.0));
         ground.setTexture("grass");
         this.entitiesList.push(ground);
+        */
 
         // Sphere
-        let sphere = new Sphere(0.5);
+        let sphere = new Sphere({ mode: 'basic' , radius: 0.5});
         sphere.setPosition(vec3.fromValues(-2.0,0.5,0.0));
         sphere.setColor(0,1,1);
         this.entitiesList.push(sphere);
@@ -70,30 +72,21 @@ class Scene extends SckorpixScene{
         this.entitiesList.push(box1);
 
         // wood Box
-        let box2 = new Box({mode: 'textureFace', uvRange: [0, 0, 2, 2]});
-        box2.setPosition(vec3.fromValues(11.0,1.0,0.0));
-        box2.setScale(vec3.fromValues(2.0,2.0,2.0));
+        let box2 = new Box({mode: 'textureFace', uvRange: [0, 0, 1, 1]});
+        box2.setPosition(vec3.fromValues(10.0,0.5,0.0));
         box2.setTexture("woodCarton");
         this.entitiesList.push(box2);
 
         // Cone
-        let cone = new Cone({ mode: 'basic' });
-        cone.setPosition(vec3.fromValues(-4.0,0.5,0.0));
-        cone.setScale(vec3.fromValues(2.0,3.0,2.0));
+        let cone = new Cone({ mode: 'basic' , radius:0.5, height:1.0});
+        cone.setPosition(vec3.fromValues(-4.0,0.0,0.0));
         cone.setColor(0,1,0);
         this.entitiesList.push(cone);
 
-        // Cone with texture
-        let texturedCone = new Cone({ mode: 'textureFace' });
-        texturedCone.setPosition(vec3.fromValues(-8.0,10.0,0.0));
-        texturedCone.setScale(vec3.fromValues(2.0,3.0,2.0));
-        texturedCone.setTexture("grass");
-        this.entitiesList.push(texturedCone);
-
         // Cyclinder
-        let cyclinder = new Cyclinder({ mode: 'basic' });
-        cyclinder.setPosition(vec3.fromValues(-8.0,8.0,0.0));
-        cyclinder.setScale(vec3.fromValues(1.0,3.0,1.0));
+        let cyclinder = new Cyclinder({ mode: 'basic' , radius:0.5, height:1.0});
+        cyclinder.setPosition(vec3.fromValues(-6.0,0.0,0.0));
+        cyclinder.setScale(vec3.fromValues(1.0,1.0,1.0));
         cyclinder.setColor(1,0,0);
         this.entitiesList.push(cyclinder);
         
